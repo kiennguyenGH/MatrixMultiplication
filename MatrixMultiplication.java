@@ -2,6 +2,28 @@ import java.util.Random;
 public class MatrixMultiplication
 {
 
+    //Assumes both matrices are nxn size
+    public static int[][] classicalMultiplcation(int[][] matrix1, int[][] matrix2)
+    {
+        if (matrix1.length == 0 || matrix2.length == 0)
+        {
+            return new int[0][0];
+        }
+        int[][] multipliedMatrix = new int[matrix1.length][matrix1.length];
+        for (int i = 0; i < matrix1.length; i++)
+        {
+            for (int k = 0; k < matrix1.length; k++)
+            {
+                multipliedMatrix[i][k] = 0;
+                for (int j = 0; j < matrix1.length; j++)
+                {
+                    multipliedMatrix[i][k] += (matrix1[i][j] * matrix2[j][k]);
+                }
+            }
+        }
+        return multipliedMatrix;
+    }
+
     public static int[][] generateMatrix(int size, int limit)
     {
         Random generator = new Random();
@@ -31,6 +53,10 @@ public class MatrixMultiplication
     public static void main(String[] args)
     {
         int[][] matrix = generateMatrix(4, 50);
+        int[][] matrix2 = generateMatrix(4, 50);
+        int[][] test = {{1, 1, 1}, {2, 2, 2}, {3, 3, 3}};
+        int[][] test2 = {{1, 1, 1}, {2, 2, 2}, {3, 3, 3}};
+        printMatrix(classicalMultiplcation(test, test2));
         printMatrix(matrix);
     }
 }

@@ -2,7 +2,7 @@ import java.util.Random;
 public class MatrixMultiplication
 {
 
-    public static int[][] generateMatrix(int size)
+    public static int[][] generateMatrix(int size, int limit)
     {
         Random generator = new Random();
         int[][] matrix = new int[size][size];
@@ -10,7 +10,7 @@ public class MatrixMultiplication
         {
             for (int j = 0; j < size; j++)
             {
-                matrix[i][j] = (generator.nextInt(size) + 1);
+                matrix[i][j] = (generator.nextInt(limit) + 1);
             }
         }
         return matrix;
@@ -30,7 +30,7 @@ public class MatrixMultiplication
 
     public static void main(String[] args)
     {
-        int[][] matrix = generateMatrix(4);
+        int[][] matrix = generateMatrix(4, 50);
         printMatrix(matrix);
     }
 }

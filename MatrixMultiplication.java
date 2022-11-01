@@ -156,18 +156,18 @@ public class MatrixMultiplication
     public static int[][] strassenMultiplication(int[][] matrix1, int[][] matrix2)
     {
         int[][] multipliedMatrix = new int[matrix1.length][matrix1.length];
-        int[][] C0 = new int[matrix1.length][matrix1.length];
-        int[][] C1 = new int[matrix1.length][matrix1.length];
-        int[][] C2 = new int[matrix1.length][matrix1.length];
-        int[][] C3 = new int[matrix1.length][matrix1.length];
     
-        if (matrix1.length == 2 || matrix2.length == 2)
+        if (matrix1.length <= 1 || matrix2.length <= 1)
         {
-            multipliedMatrix[0][0] = (matrix1[0][0] * matrix2[0][0]) + (matrix1[0][1] + matrix2[1][0]);
-            multipliedMatrix[0][1] = (matrix1[0][0] * matrix2[0][1]) + (matrix1[0][1] + matrix2[1][1]);
-            multipliedMatrix[1][0] = (matrix1[1][0] * matrix2[0][0]) + (matrix1[1][1] + matrix2[1][0]);
-            multipliedMatrix[1][1] = (matrix1[1][0] * matrix2[0][1]) + (matrix1[1][1] + matrix2[1][1]);
+            multipliedMatrix[0][0] = matrix1[0][0] * matrix2[0][0];
         }
+        // if (matrix1.length == 2 || matrix2.length == 2)
+        // {
+        //     multipliedMatrix[0][0] = (matrix1[0][0] * matrix2[0][0]) + (matrix1[0][1] + matrix2[1][0]);
+        //     multipliedMatrix[0][1] = (matrix1[0][0] * matrix2[0][1]) + (matrix1[0][1] + matrix2[1][1]);
+        //     multipliedMatrix[1][0] = (matrix1[1][0] * matrix2[0][0]) + (matrix1[1][1] + matrix2[1][0]);
+        //     multipliedMatrix[1][1] = (matrix1[1][0] * matrix2[0][1]) + (matrix1[1][1] + matrix2[1][1]);
+        // }
         else
         {
             int[][] A0 = new int[matrix1.length/2][matrix1.length/2];
@@ -196,10 +196,10 @@ public class MatrixMultiplication
             int[][] U = strassenMultiplication(subtractMatrix(A2, A0), addMatrix(B0, B1));
             int[][] V = strassenMultiplication(subtractMatrix(A1, A3), addMatrix(B2, B3));
     
-            C0 = addMatrix(subtractMatrix(S,T), addMatrix(P, V));
-            C1 = addMatrix(R, T);
-            C2 = addMatrix(Q, S);
-            C3 = addMatrix(subtractMatrix(R,Q), addMatrix(P, U));
+            int[][] C0 = addMatrix(subtractMatrix(S,T), addMatrix(P, V));
+            int[][] C1 = addMatrix(R, T);
+            int[][] C2 = addMatrix(Q, S);
+            int[][] C3 = addMatrix(subtractMatrix(R,Q), addMatrix(P, U));
     
             multipliedMatrix = combineMatrix(C0, C1, C2, C3);
         }
@@ -237,6 +237,8 @@ public class MatrixMultiplication
     {
         int[][] test = {{1, 2, 3, 4}, {1, 2, 3, 4}, {1, 2, 3, 4}, {1, 2, 3, 4}};
         int[][] test2 = {{1, 2, 3, 4}, {1, 2, 3, 4}, {1, 2, 3, 4}, {1, 2, 3, 4}};
+        // int[][] test = {{1,1}, {1,1}};
+        // int[][] test2 = {{1,1}, {1,1}};
         printMatrix(strassenMultiplication(test, test2));
         // printMatrix(classicalMultiplcation(test, test2));
         // printMatrix(test);

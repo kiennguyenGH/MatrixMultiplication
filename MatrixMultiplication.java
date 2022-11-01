@@ -93,6 +93,19 @@ public class MatrixMultiplication
         return sum;
     }
 
+    public static int[][] subtractMatrix(int[][] matrix1, int[][] matrix2)
+    {
+        int[][] difference = new int[matrix1.length][matrix1.length];
+        for (int i = 0; i < matrix1.length; i++)
+        {
+            for (int k = 0; k < matrix1.length; k++)
+            {
+                difference[i][k] = matrix1[i][k] - matrix2[i][k];
+            }
+        }
+        return difference;
+    }
+
     public static int[][] DACMultiplication(int[][] matrix1, int[][] matrix2)
     {
         int[][] multipliedMatrix = new int[matrix1.length][matrix1.length];
@@ -140,6 +153,60 @@ public class MatrixMultiplication
         return multipliedMatrix;
     }
 
+    public static int[][] strassenMultiplication(int[][] matrix1, int[][] matrix2)
+    {
+        int[][] multipliedMatrix = new int[matrix1.length][matrix1.length];
+        int[][] C0 = new int[matrix1.length][matrix1.length];
+        int[][] C1 = new int[matrix1.length][matrix1.length];
+        int[][] C2 = new int[matrix1.length][matrix1.length];
+        int[][] C3 = new int[matrix1.length][matrix1.length];
+    
+        if (matrix1.length == 2 || matrix2.length == 2)
+        {
+            multipliedMatrix[0][0] = (matrix1[0][0] * matrix2[0][0]) + (matrix1[0][1] + matrix2[1][0]);
+            multipliedMatrix[0][1] = (matrix1[0][0] * matrix2[0][1]) + (matrix1[0][1] + matrix2[1][1]);
+            multipliedMatrix[1][0] = (matrix1[1][0] * matrix2[0][0]) + (matrix1[1][1] + matrix2[1][0]);
+            multipliedMatrix[1][1] = (matrix1[1][0] * matrix2[0][1]) + (matrix1[1][1] + matrix2[1][1]);
+        }
+        else
+        {
+            int[][] A0 = new int[matrix1.length/2][matrix1.length/2];
+            int[][] A1 = new int[matrix1.length/2][matrix1.length/2];
+            int[][] A2 = new int[matrix1.length/2][matrix1.length/2];
+            int[][] A3 = new int[matrix1.length/2][matrix1.length/2];
+            int[][] B0 = new int[matrix1.length/2][matrix1.length/2];
+            int[][] B1 = new int[matrix1.length/2][matrix1.length/2];
+            int[][] B2 = new int[matrix1.length/2][matrix1.length/2];
+            int[][] B3 = new int[matrix1.length/2][matrix1.length/2];
+    
+            splitMatrix(matrix1, A0, 0, 0);
+            splitMatrix(matrix1, A1, 0, matrix1.length/2);
+            splitMatrix(matrix1, A2, matrix1.length/2, 0);
+            splitMatrix(matrix1, A3, matrix1.length/2, matrix1.length/2);
+            splitMatrix(matrix2, B0, 0, 0);
+            splitMatrix(matrix2, B1, 0, matrix2.length/2);
+            splitMatrix(matrix2, B2, matrix2.length/2, 0);
+            splitMatrix(matrix2, B3, matrix2.length/2, matrix2.length/2);
+    
+            int[][] P = strassenMultiplication(addMatrix(A0, A3), addMatrix(B0, B3));
+            int[][] Q = strassenMultiplication(addMatrix(A2, A3), B0);
+            int[][] R = strassenMultiplication(A0, subtractMatrix(B1, B3));
+            int[][] S = strassenMultiplication(A3, subtractMatrix(B2, B0));
+            int[][] T = strassenMultiplication(addMatrix(A0, A1), B3);
+            int[][] U = strassenMultiplication(subtractMatrix(A2, A0), addMatrix(B0, B1));
+            int[][] V = strassenMultiplication(subtractMatrix(A1, A3), addMatrix(B2, B3));
+    
+            C0 = addMatrix(subtractMatrix(S,T), addMatrix(P, V));
+            C1 = addMatrix(R, T);
+            C2 = addMatrix(Q, S);
+            C3 = addMatrix(subtractMatrix(R,Q), addMatrix(P, U));
+    
+            multipliedMatrix = combineMatrix(C0, C1, C2, C3);
+        }
+
+        return multipliedMatrix;
+    }
+
     public static int[][] generateMatrix(int size, int limit)
     {
         Random generator = new Random();
@@ -168,11 +235,9 @@ public class MatrixMultiplication
 
     public static void main(String[] args)
     {
-        int[][] matrix = generateMatrix(4, 50);
-        int[][] matrix2 = generateMatrix(4, 50);
         int[][] test = {{1, 2, 3, 4}, {1, 2, 3, 4}, {1, 2, 3, 4}, {1, 2, 3, 4}};
         int[][] test2 = {{1, 2, 3, 4}, {1, 2, 3, 4}, {1, 2, 3, 4}, {1, 2, 3, 4}};
-        printMatrix(DACMultiplication(test, test2));
+        printMatrix(strassenMultiplication(test, test2));
         // printMatrix(classicalMultiplcation(test, test2));
         // printMatrix(test);
     }

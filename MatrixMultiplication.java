@@ -134,19 +134,19 @@ public class MatrixMultiplication
         splitMatrix(matrix2, B2, matrix2.length/2, 0);
         splitMatrix(matrix2, B3, matrix2.length/2, matrix2.length/2);
 
-        int[][] A0B0 = DACMultiplication(A0, B0);
-        int[][] A1B2 = DACMultiplication(A1, B2);
-        int[][] A0B1 = DACMultiplication(A0, B1);
-        int[][] A1B3 = DACMultiplication(A1, B3);
-        int[][] A2B0 = DACMultiplication(A2, B0);
-        int[][] A3B2 = DACMultiplication(A3, B2);
-        int[][] A2B1 = DACMultiplication(A2, B1);
-        int[][] A3B3 = DACMultiplication(A3, B3);
+        // int[][] A0B0 = DACMultiplication(A0, B0);
+        // int[][] A1B2 = DACMultiplication(A1, B2);
+        // int[][] A0B1 = DACMultiplication(A0, B1);
+        // int[][] A1B3 = DACMultiplication(A1, B3);
+        // int[][] A2B0 = DACMultiplication(A2, B0);
+        // int[][] A3B2 = DACMultiplication(A3, B2);
+        // int[][] A2B1 = DACMultiplication(A2, B1);
+        // int[][] A3B3 = DACMultiplication(A3, B3);
 
-        int[][] C0 = addMatrix(A0B0, A1B2);
-        int[][] C1 = addMatrix(A0B1, A1B3);
-        int[][] C2 = addMatrix(A2B0, A3B2);
-        int[][] C3 = addMatrix(A2B1, A3B3);
+        int[][] C0 = addMatrix(DACMultiplication(A0, B0), DACMultiplication(A1, B2));
+        int[][] C1 = addMatrix(DACMultiplication(A0, B1), DACMultiplication(A1, B3));
+        int[][] C2 = addMatrix(DACMultiplication(A2, B0), DACMultiplication(A3, B2));
+        int[][] C3 = addMatrix(DACMultiplication(A2, B1), DACMultiplication(A3, B3));
 
         multipliedMatrix = combineMatrix(C0, C1, C2, C3);
 
@@ -333,7 +333,7 @@ public class MatrixMultiplication
         // long time = endTime - initialTime;
         // System.out.println((double)time/1_000_000_000.0 + " seconds");
         
-        // printMatrix(classicalMultiplication(test, test2));
+        // printMatrix(DACMultiplication(test, test2));
         // printMatrix(test);
     }
 }

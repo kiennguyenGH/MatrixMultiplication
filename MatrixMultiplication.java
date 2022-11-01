@@ -309,7 +309,7 @@ public class MatrixMultiplication
     }
     public static void main(String[] args)
     {
-        for (int i = 2; i <= 1024; i *= 2)
+        for (int i = 2; i <= 2048; i *= 2)
         {
             System.out.println(i + " x " + i + " Matrix:");
             System.out.println("Average time for Classical Matrix Multiplication (in seconds): ");

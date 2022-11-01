@@ -3,7 +3,7 @@ public class MatrixMultiplication
 {
 
     //Assumes both matrices are nxn size
-    public static int[][] classicalMultiplcation(int[][] matrix1, int[][] matrix2)
+    public static int[][] classicalMultiplication(int[][] matrix1, int[][] matrix2)
     {
         if (matrix1.length == 0 || matrix2.length == 0 || matrix1.length != matrix2[0].length)
         {
@@ -233,14 +233,107 @@ public class MatrixMultiplication
         }
     }
 
+    public static double averageClassical(int size)
+    {
+        double avg = 0;
+        for (int i = 0; i < 1000; i++)
+        {
+            
+            int[][] matrix = generateMatrix(size, 100);
+            int[][] matrix2 = generateMatrix(size, 100);
+            double avg2 = 0;
+            for (int k = 0; k < 20; k++)
+            {
+                long initialTime = System.nanoTime();
+                classicalMultiplication(matrix, matrix2);
+                long endTime = System.nanoTime();
+                long totalTime = endTime - initialTime;
+                // System.out.println((double)totalTime/1000000.0);
+                avg2 += ((double)totalTime/1_000_000_000.0);
+            }
+            avg2 = avg2/20;
+            avg += avg2;
+        }
+        avg = avg/1000;
+        return avg;
+    }
+
+    public static double averageDAC(int size)
+    {
+        double avg = 0;
+        for (int i = 0; i < 1000; i++)
+        {
+            
+            int[][] matrix = generateMatrix(size, 100);
+            int[][] matrix2 = generateMatrix(size, 100);
+            double avg2 = 0;
+            for (int k = 0; k < 20; k++)
+            {
+                long initialTime = System.nanoTime();
+                DACMultiplication(matrix, matrix2);
+                long endTime = System.nanoTime();
+                long totalTime = endTime - initialTime;
+                // System.out.println((double)totalTime/1000000.0);
+                avg2 += ((double)totalTime/1_000_000_000.0);
+            }
+            avg2 = avg2/20;
+            avg += avg2;
+        }
+        avg = avg/1000;
+        return avg;
+    }
+
+    public static double averageStrassen(int size)
+    {
+        double avg = 0;
+        for (int i = 0; i < 1000; i++)
+        {
+            
+            int[][] matrix = generateMatrix(size, 100);
+            int[][] matrix2 = generateMatrix(size, 100);
+            double avg2 = 0;
+            for (int k = 0; k < 20; k++)
+            {
+                long initialTime = System.nanoTime();
+                strassenMultiplication(matrix, matrix2);
+                long endTime = System.nanoTime();
+                long totalTime = endTime - initialTime;
+                // System.out.println((double)totalTime/1000000.0);
+                avg2 += ((double)totalTime/1_000_000_000.0);
+            }
+            avg2 = avg2/20.0;
+            avg += avg2;
+        }
+        avg = avg/1000.0;
+        return avg;
+    }
     public static void main(String[] args)
     {
-        int[][] test = {{1, 2, 3, 4}, {1, 2, 3, 4}, {1, 2, 3, 4}, {1, 2, 3, 4}};
-        int[][] test2 = {{1, 2, 3, 4}, {1, 2, 3, 4}, {1, 2, 3, 4}, {1, 2, 3, 4}};
-        // int[][] test = {{1,1}, {1,1}};
-        // int[][] test2 = {{1,1}, {1,1}};
-        printMatrix(strassenMultiplication(test, test2));
-        // printMatrix(classicalMultiplcation(test, test2));
+        for (int i = 2; i <= 1024; i *= 2)
+        {
+            System.out.println(i + " x " + i + " Matrix:");
+            System.out.println("Average time for Classical Matrix Multiplication (in seconds): ");
+            System.out.println(averageClassical(i));
+            System.out.println("Average time for Divide and Conquer for size (in seconds): ");
+            System.out.println(averageDAC(i));
+            System.out.println("Average time for Strassen's Divide and Conquer for size (in seconds): ");
+            System.out.println(averageStrassen(i));
+            System.out.println();
+        }
+        // System.out.println(averageClassical(4));
+        // System.out.println(averageDAC(4));
+        // System.out.println(averageStrassen(4));
+        // int[][] test = {{1, 2, 3, 4}, {1, 2, 3, 4}, {1, 2, 3, 4}, {1, 2, 3, 4}};
+        // int[][] test2 = {{1, 2, 3, 4}, {1, 2, 3, 4}, {1, 2, 3, 4}, {1, 2, 3, 4}};
+        // int[][] test = generateMatrix(64, 100);
+        // int[][] test2 = generateMatrix(64, 100);
+        // long initialTime = System.nanoTime();
+        // classicalMultiplication(test, test2);
+        // long endTime = System.nanoTime();
+        // long time = endTime - initialTime;
+        // System.out.println((double)time/1_000_000_000.0 + " seconds");
+        
+        // printMatrix(classicalMultiplication(test, test2));
         // printMatrix(test);
     }
 }
